@@ -6,6 +6,7 @@ import Login from "./pages/login/Login";
 import Cart from "./pages/cart/Cart";
 import ForgotPassword from "./pages/forgotpassword/ForgotPassword";
 import ResetPassword from "./pages/resetpassword/ResetPassword";
+import ProductsDetails from "./components/products/ProductsDetails";
 
 
 const router = createBrowserRouter([
@@ -38,7 +39,10 @@ index:true,
 
              {
  path:"/resetpassword",
-        element:<ResetPassword />,
+        element:<ResetPassword/>,
+            },
+           { path:'/product/:id',
+        element:<ProductsDetails/>,
             },
         ]
     },

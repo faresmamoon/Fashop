@@ -8,19 +8,27 @@ import  * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import loginSchema from '../../validations/LoginSchema';
 import { Link } from '@mui/material';
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 export default function Login() {
 
   const{register,handleSubmit,formState:{errors}}= useForm({
     resolver:yupResolver(loginSchema)
 });
+const navigate=useNavigate();
+
   const [isLoading,setIsLoading]=useState(false);
+  
   const onSubmit=async(data)=>{
 try{
   setIsLoading(true);
 const response= await axios.post(`https://kashop1.runasp.net/api/Identity/Account/Login`,data)
 console.log(response);
+if(response.status == 200){
+  localStorage.setItem("userToken",response.data.token);
+navigate('/')
+
+}
 }catch(error){
 console.log("cath error",error);
 }finally{

@@ -1,10 +1,15 @@
 import { Typography } from '@mui/material'
 import React from 'react'
+import Brands from '../../components/brands/Brands'
+import Categories from '../../components/categories/Categories'
+import Products from '../../components/products/Products'
 
 export default function Home() {
   return (
     <div>
-        <Typography component={'h1'} variant='h4' >Home</Typography>
-    </div>
+ <Brands/>  
+ <Categories/> 
+ <Products/>
+  </div>
   )
 }

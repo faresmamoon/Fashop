@@ -16,6 +16,7 @@ export default function Register() {
 });
 const navigate=useNavigate();
   const [isLoading,setIsLoading]=useState(false);
+  const [serverError,setServerError]=useState("")
   const onSubmit=async(data)=>{
 try{
   setIsLoading(true);
@@ -25,7 +26,12 @@ if(response.status==200){
 navigate('/login')
 }
 }catch(error){
-console.log("cath error",error);
+if(error.response){
+  setServerError(error.response.data.message);
+}
+else{
+  setServerError("An unexptected error...");
+}
 }finally{
   setIsLoading(false);
 }
@@ -47,6 +53,7 @@ component={"form"} sx={{display:"flex",
   flexDirection:"column",
   gap:4,
   mt:5}}>
+    {serverError  && (<Typography color='error' > {serverError} </Typography>)}
   <TextField {...register("fullName")}
    label="fullName" variant='outlined'  fullWidth 
    error={errors.fullName}
