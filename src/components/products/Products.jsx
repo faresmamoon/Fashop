@@ -36,12 +36,12 @@ Products
    {products.map((product)=>(
     <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}  >
         <Link to={`/product/${product.id}`}   style={{ textDecoration: "none" }} >
-        <Card  sx={{boxShadow:5,borderRadius:3}}>
-            <CardMedia alt={product.name} height="160" sx={{p:2,objectFit:"contain"}} component='img' image={product.mainImageUrl}>
+        <Card  sx={{boxShadow:5,borderRadius:3,maxWidth:300}}>
+            <CardMedia alt={product.name}  sx={{p:2,objectFit:"contain"}} component='img' image={product.mainImageUrl}>
             </CardMedia>
             <CardContent>
-                <Typography align="center" variant="h4">{product.name}</Typography>
-                <Typography align="center" variant="h4">{product.price}$</Typography>
+                <Typography align="center" variant="h5">{product.name.split(' ').slice(0,4).join(' ')}</Typography>
+                <Typography align="center" variant="h6" color='text.secondary'>{product.price}$</Typography>
 
             </CardContent>
             
