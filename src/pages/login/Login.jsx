@@ -8,7 +8,7 @@ import  * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import loginSchema from '../../validations/LoginSchema';
 import { Link } from '@mui/material';
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useOutletContext } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
 
 export default function Login() {
@@ -16,6 +16,7 @@ export default function Login() {
   const{register,handleSubmit,formState:{errors}}= useForm({
     resolver:yupResolver(loginSchema)
 });
+const {setIsLoggedIn}=useOutletContext();
 const navigate=useNavigate();
 
   const [isLoading,setIsLoading]=useState(false);
@@ -27,7 +28,8 @@ const response= await axios.post(`https://kashop1.runasp.net/api/Identity/Accoun
 console.log(response);
 if(response.status == 200){
   localStorage.setItem("userToken",response.data.token);
-navigate('/')
+navigate('/');
+setIsLoggedIn(true);
  toast.success('Login succesfully', {
 position: "top-right",
 autoClose: 5000,

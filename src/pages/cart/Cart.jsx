@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,Box } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
@@ -110,9 +110,16 @@ console.log(error);
           <TableRow key={item.productId}> 
             <TableCell>  {item.productName} </TableCell>
             <TableCell>  {item.price}$  </TableCell>
-            <TableCell sx={{display:'flex',alignItems:'center',gap:'8px'}}> <RemoveIcon sx={{fontSize:15}}  onClick={()=>decrementItem(item)}></RemoveIcon>  {item.count} <AddIcon sx={{fontSize:15}}  onClick={()=>incrementItem(item.productId)}></AddIcon></TableCell>
+            <TableCell >
+              <Box sx={{display:'flex',alignItems:'center',gap:'8px'}}>
+<RemoveIcon sx={{fontSize:15}}  onClick={()=>decrementItem(item)}></RemoveIcon>  
+            {item.count}
+             <AddIcon sx={{fontSize:15}}  onClick={()=>incrementItem(item.productId)}></AddIcon>
+              </Box>
+               </TableCell>
             <TableCell>  {item.totalPrice}  </TableCell>
             <TableCell>  <Button color='error' onClick={()=>removeItem(item.productId)}>Remove</Button> </TableCell>
+          
           </TableRow>
           )}
           <TableRow>

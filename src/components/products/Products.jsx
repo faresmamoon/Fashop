@@ -1,39 +1,28 @@
 import { Box, Card, CardActions, CardContent, CardMedia, CircularProgress, Grid, Typography } from '@mui/material';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query';
+
 import { Link } from 'react-router-dom';
+import AxiosInstanse from '../../api/AxiosInstanse';
 
 export default function Products() {
-    const [products,setProducts]=useState([]);
-      const [isLoading,setIsLoading]=useState(true);
-      
-      const getProducts=async()=>{
-        try{
-        const response=await axios.get(`https://kashop1.runasp.net/api/Customer/Products`);
-        console.log(response);
-        setProducts(response.data)
-        }catch(error){
-    console.log(error);
-        }finally{
-            setIsLoading(false);
-        }
-    
-      }
-      useEffect(()=>{
-        getProducts();
-      },[]);
-      if(isLoading){
-        return(
-            <CircularProgress/>
-        )
-      }
+   const fetchProducts= async()=>{
+          const response=await AxiosInstanse.get(`/Products`);
+return response;
+    }
+    const{data,isLoading,isError,error}=useQuery({
+      queryKey:['Products'],
+      queryFn:fetchProducts,
+      staleTime:1000 * 60 * 5
+    })
+if(isError)return<p>error is{error}</p>
+if(isLoading) return <CircularProgress/>
   return (
    <Box py={5}  >
 <Typography variant="h3" component="h2">
 Products
 </Typography>
 <Grid container spacing={3}>
-   {products.map((product)=>(
+   {data.data.map((product)=>(
     <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}  >
         <Link to={`/product/${product.id}`}   style={{ textDecoration: "none" }} >
         <Card  sx={{boxShadow:5,borderRadius:3,maxWidth:300}}>

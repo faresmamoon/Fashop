@@ -1,39 +1,27 @@
 import { Box, Card, CardContent, CardMedia, CircularProgress, Grid, Typography } from "@mui/material";
-import axios from "axios";
-import { useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query";
+
+import AxiosInstanse from "../../api/AxiosInstanse";
 
 export default function Brands() {
-    const [brands,setBrands]=useState([]);
-  const [isLoading,setIsLoading]=useState(true);
-  
-  const getBrands=async()=>{
-    try{
-    const response=await axios.get(`https://kashop1.runasp.net/api/Customer/Brands`);
-    console.log(response);
-    setBrands(response.data)
-    }catch(error){
-console.log(error);
-    }finally{
-        setIsLoading(false);
+    const fetchBrands= async()=>{
+          const response=await AxiosInstanse.get(`/Brands`);
+return response;
     }
-
-  }
-  useEffect(()=>{
-    getBrands();
-  },[]);
-  if(isLoading){
-    return(
-        <CircularProgress/>
-    )
-  }
-
+    const{data,isLoading,isError,error}=useQuery({
+      queryKey:['brands'],
+      queryFn:fetchBrands,
+      staleTime:1000 * 60 * 5
+    })
+if(isError)return<p>error is{error}</p>
+if(isLoading) return <CircularProgress/>
   return (
    <Box py={5}  >
 <Typography variant="h3" component="h2">
 our brands
 </Typography>
 <Grid container spacing={3}>
-   {brands.map((brand)=>(
+   {data.data.map((brand)=>(
     <Grid key={brand.id} item xs={12} sm={6} md={4} lg={3}  >
         <Card  sx={{boxShadow:5,borderRadius:3}}>
             <CardMedia alt={brand.name} height="160" sx={{p:2}} component='img' image={brand.mainImageUrl}>

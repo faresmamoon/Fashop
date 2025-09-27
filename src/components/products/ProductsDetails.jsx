@@ -4,29 +4,31 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import AxiosUserInstanse from '../../api/AxiosUserInstanse';
 import { toast, Zoom } from 'react-toastify';
+import { useQuery } from '@tanstack/react-query';
+import AxiosInstanse from '../../api/AxiosInstanse';
 
-export default function ProductsDetails() {
+export default function ProductsDetails() { 
     const{id}= useParams();
-    
-    const [product,setProduct] = useState({});
-      const [isLoading,setIsLoading]=useState(true);
-const getProduct=async()=>{
-  try{
-    const response= await axios.get(`https://kashop1.runasp.net/api/Customer/Products/${id}`)
-setProduct(response.data);
-  }catch(error){
-    console.log(error);
+  const fetchProductDetails= async()=>{
+          const response=await AxiosInstanse.get(`/Products/${id}`);
+return response;
+    }
+    const{data,isLoading,isError,error}=useQuery({
+      queryKey:['Products',id],
+      queryFn:fetchProductDetails,
+      staleTime:1000 * 60 * 5
+    })
+if(isError)return<p>error is{error}</p>
+if(isLoading) return <CircularProgress/>
 
-  }finally{
-setIsLoading(false);
-  } }
+    
+
         const addToCart= async (id)=>{
 try{
-  const token = localStorage.getItem('userToken');
 const response= await AxiosUserInstanse.post(`/Carts`,
   {productId:id},
 );if( response.status== 200 ){
-    toast.success('product added succesfully', {
+   toast.success('product added succesfully', {
 position: "top-right",
 autoClose: 5000,
 hideProgressBar: false,
@@ -44,41 +46,34 @@ transition: Zoom,
 }finally{
 
 }        }
-  useEffect(()=>{
-getProduct();
-       },[]);
-  if(isLoading){
-          return(
-              <CircularProgress/>
-          )
-        }
+  
 
 
     console.log(id);
   return (
     <Box py={5}>
       <Card sx={{display:'flex',alignItems:'center',boxShadow:5}}>
-        <CardMedia sx={{width:400,p:4}} component='img' image={product.mainImageUrl}>
+        <CardMedia sx={{width:400,p:4}} component='img' image={data.data.mainImageUrl}>
         </CardMedia>
         <CardContent sx={{display:'flex',flexDirection:'column',gap:'20px'}} >
           <Typography component={'h2'} variant='h6'>
-            {product.name}
+            {data.data.name}
           </Typography>
-          <Rating value={product.rate}   />
+          <Rating value={data.data.rate}   />
           <Typography component="p" variant='body1'>
-            {product.description}
+            {data.data.description}
           </Typography>
           <Typography component="p" variant='body1'>
-            price: {product.price}$
+            price: {data.data.price}$
           </Typography>
           <Typography component="h6" variant='body1'>
-            Category:<Chip label={product.categoryName}/> 
+            Category:<Chip label={data.data.categoryName}/> 
             
           </Typography>
           <Typography component="h6" variant='body1'>
-            Brand:<Chip label={product.brandName}/> 
+            Brand:<Chip label={data.data.brandName}/> 
           </Typography>
-          <Button variant='contained' color='primary' onClick={()=>addToCart(product.id)}>Add To Cart</Button>
+          <Button variant='contained' color='primary' onClick={()=>addToCart(data.data.id)}>Add To Cart</Button>
         </CardContent>
       </Card>
     </Box>
