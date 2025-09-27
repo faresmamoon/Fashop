@@ -9,7 +9,7 @@ export default function Cart() {
  const getProducts=async()=>{
   try{
     const token=localStorage.getItem("userToken");
-    const response= await AxiosUserInstanse.get(`/Carts`);
+    const response= await AxiosUserInstanse.get(`/Carts`,);
     
 console.log(response);
 setCarts(response.data);
@@ -23,7 +23,7 @@ setIsLoading(false);
 const removeItem= async(productId)=>{
   try{
         const token=localStorage.getItem("userToken");
-const response = await AxiosUserInstanse.delete(`/Carts/${productId}`
+const response = await AxiosUserInstanse.delete(`/Carts/${productId}`,
 )
 getProducts();
   }catch(error){
@@ -35,7 +35,7 @@ getProducts();
  const  clearCart=async()=>{
   try{
         const token=localStorage.getItem("userToken");
-const response = await AxiosUserInstanse.delete(`/Carts/clear`
+const response = await AxiosUserInstanse.delete(`/Carts/clear`,
 );
 if(response.status == 200){
   getProducts();
@@ -50,7 +50,7 @@ console.log(error);
  const incrementItem= async(productId)=>{
   try{
     const token=localStorage.getItem('userToken');
-    const response=await AxiosUserInstanse.post(`/Carts/increment/${productId}`,{}
+    const response=await AxiosUserInstanse.post(`/Carts/increment/${productId}`,{},
      
     ); 
     if(response.status == 200){
@@ -71,7 +71,7 @@ console.log(error);
        return;
     }
     const token=localStorage.getItem('userToken');
-    const response=await AxiosUserInstanse.post(`/Carts/decrement/${item.productId}`,{}
+    const response=await AxiosUserInstanse.post(`/Carts/decrement/${item.productId}`,{},
     ); 
    
     if(response.status == 200){
@@ -110,7 +110,7 @@ console.log(error);
           <TableRow key={item.productId}> 
             <TableCell>  {item.productName} </TableCell>
             <TableCell>  {item.price}$  </TableCell>
-            <TableCell > <RemoveIcon sx={{fontSize:15}}  onClick={()=>decrementItem(item)}></RemoveIcon>  {item.count} <AddIcon sx={{fontSize:15}}  onClick={()=>incrementItem(item.productId)}></AddIcon></TableCell>
+            <TableCell sx={{display:'flex',alignItems:'center',gap:'8px'}}> <RemoveIcon sx={{fontSize:15}}  onClick={()=>decrementItem(item)}></RemoveIcon>  {item.count} <AddIcon sx={{fontSize:15}}  onClick={()=>incrementItem(item.productId)}></AddIcon></TableCell>
             <TableCell>  {item.totalPrice}  </TableCell>
             <TableCell>  <Button color='error' onClick={()=>removeItem(item.productId)}>Remove</Button> </TableCell>
           </TableRow>
