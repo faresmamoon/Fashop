@@ -2,6 +2,8 @@ import { Box, Button, Card, CardContent, CardMedia, Chip, CircularProgress, Rati
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import AxiosUserInstanse from '../../api/AxiosUserInstanse';
+import { toast, Zoom } from 'react-toastify';
 
 export default function ProductsDetails() {
     const{id}= useParams();
@@ -21,14 +23,21 @@ setIsLoading(false);
         const addToCart= async (id)=>{
 try{
   const token = localStorage.getItem('userToken');
-const response= await axios.post(`https://kashop1.runasp.net/api/Customer/Carts`,
+const response= await AxiosUserInstanse.post(`/Carts`,
   {productId:id},
-{
-  headers:{
-  Authorization:`Bearer ${token}`
-}
-
+);if( response.status== 200 ){
+    toast.success('product added succesfully', {
+position: "top-right",
+autoClose: 5000,
+hideProgressBar: false,
+closeOnClick: false,
+pauseOnHover: true,
+draggable: true,
+progress: undefined,
+theme: "light",
+transition: Zoom,
 });
+  }
   console.log(response);
 }catch(error){
 

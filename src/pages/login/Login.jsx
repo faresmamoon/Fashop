@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import loginSchema from '../../validations/LoginSchema';
 import { Link } from '@mui/material';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { toast, Zoom } from 'react-toastify';
 
 export default function Login() {
 
@@ -27,7 +28,17 @@ console.log(response);
 if(response.status == 200){
   localStorage.setItem("userToken",response.data.token);
 navigate('/')
-
+ toast.success('Login succesfully', {
+position: "top-right",
+autoClose: 5000,
+hideProgressBar: false,
+closeOnClick: false,
+pauseOnHover: true,
+draggable: true,
+progress: undefined,
+theme: "light",
+transition: Zoom,
+})
 }
 }catch(error){
 console.log("cath error",error);

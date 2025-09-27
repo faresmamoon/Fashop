@@ -1,21 +1,15 @@
 import { Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';import AxiosUserInstanse from '../../api/AxiosUserInstanse';
 export default function Cart() {
       const [carts,setCarts] = useState([]);
         const [isLoading,setIsLoading]=useState(true);
  const getProducts=async()=>{
   try{
     const token=localStorage.getItem("userToken");
-    const response= await axios.get(`https://kashop1.runasp.net/api/Customer/Carts`,
-      
-{
-  headers:{
-  Authorization:`Bearer ${token}`
-}
-
-});
+    const response= await AxiosUserInstanse.get(`/Carts`,);
     
 console.log(response);
 setCarts(response.data);
@@ -25,13 +19,11 @@ setCarts(response.data);
   }finally{
 setIsLoading(false);
   } }
+  
 const removeItem= async(productId)=>{
   try{
         const token=localStorage.getItem("userToken");
-const response = await axios.delete(`https://kashop1.runasp.net/api/Customer/Carts/${productId}`,
-  { headers:{
-  Authorization:`Bearer ${token}`
-}}
+const response = await AxiosUserInstanse.delete(`/Carts/${productId}`,
 )
 getProducts();
   }catch(error){
@@ -40,6 +32,59 @@ getProducts();
 
   }
 }
+ const  clearCart=async()=>{
+  try{
+        const token=localStorage.getItem("userToken");
+const response = await AxiosUserInstanse.delete(`/Carts/clear`,
+);
+if(response.status == 200){
+  getProducts();
+}
+
+  }catch(error){
+console.log(error);
+  }finally{
+
+  }
+ }
+ const incrementItem= async(productId)=>{
+  try{
+    const token=localStorage.getItem('userToken');
+    const response=await AxiosUserInstanse.post(`/Carts/increment/${productId}`,{},
+     
+    ); 
+    if(response.status == 200){
+        getProducts();
+      }
+  }catch(error){
+    console.log(error)
+  }finally{
+
+  }
+
+ }
+ const decrementItem= async(item)=>{
+  try{
+   if(item.count == 1){
+      removeItem(item.productId);
+       getProducts();
+       return;
+    }
+    const token=localStorage.getItem('userToken');
+    const response=await AxiosUserInstanse.post(`/Carts/decrement/${item.productId}`,{},
+    ); 
+   
+    if(response.status == 200){
+        getProducts();
+      } 
+      
+  }catch(error){
+    console.log(error)
+  }finally{
+
+  }
+
+ }
     useEffect(()=>{
   getProducts();
          },[]);
@@ -64,9 +109,9 @@ getProducts();
           {carts.items.map((item)=>
           <TableRow>
             <TableCell>  {item.productName} </TableCell>
-            <TableCell>  {item.price}$ </TableCell>
-            <TableCell>  {item.count} </TableCell>
-            <TableCell>  {item.totalPrice} </TableCell>
+            <TableCell>  {item.price}$  </TableCell>
+            <TableCell sx={{display:'flex',alignItems:'center',gap:'8px'}}> <RemoveIcon sx={{fontSize:15}}  onClick={()=>decrementItem(item)}></RemoveIcon>  {item.count} <AddIcon sx={{fontSize:15}}  onClick={()=>incrementItem(item.productId)}></AddIcon></TableCell>
+            <TableCell>  {item.totalPrice}  </TableCell>
             <TableCell>  <Button color='error' onClick={()=>removeItem(item.productId)}>Remove</Button> </TableCell>
           </TableRow>
           )}
@@ -76,6 +121,13 @@ getProducts();
             </TableCell>
              <TableCell>
               {carts.cartTotal}
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={5} align='right' >
+              <Button variant='contained' color='error' onClick={clearCart}>
+                Cler Cart
+              </Button>
             </TableCell>
           </TableRow>
         </TableBody>
