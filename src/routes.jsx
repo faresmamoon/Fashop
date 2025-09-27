@@ -32,7 +32,7 @@ index:true,
  path:"/cart",
         element:<ProtectedRouter>
             <Cart/>
-        </ProtectedRouter>
+        </ProtectedRouter>,
             },
 
                          {
@@ -44,7 +44,8 @@ index:true,
  path:"/resetpassword",
         element:<ResetPassword/>,
             },
-           { path:'/product/:id',
+           { 
+            path:'/product/:id',
         element:<ProtectedRouter>
             <ProductsDetails/>
         </ProtectedRouter>
