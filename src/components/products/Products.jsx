@@ -3,8 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Link } from 'react-router-dom';
 import AxiosInstanse from '../../api/AxiosInstanse';
+import { useTranslation } from 'react-i18next';
 
 export default function Products() {
+     const { t} = useTranslation();
+  
    const fetchProducts= async()=>{
           const response=await AxiosInstanse.get(`/Products`);
 return response;
@@ -19,7 +22,7 @@ if(isLoading) return <CircularProgress/>
   return (
    <Box py={5}  >
 <Typography variant="h3" component="h2">
-Products
+{t("Products")}
 </Typography>
 <Grid container spacing={3}>
    {data.data.map((product)=>(

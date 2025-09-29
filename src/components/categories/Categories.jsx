@@ -1,8 +1,11 @@
 import { Box, Card, CardContent, CircularProgress, Grid, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import AxiosInstanse from '../../api/AxiosInstanse';
+import { useTranslation } from 'react-i18next';
 
 export default function Categories() {
+     const { t} = useTranslation();
+  
      const fetchCategories= async()=>{
           const response=await AxiosInstanse.get(`/Categories`);
 return response;
@@ -17,7 +20,7 @@ if(isLoading) return <CircularProgress/>
   return (
  <Box py={5}  >
 <Typography variant="h3" component="h2">
-our Categorie
+{t("Categories")}
 </Typography>
 <Grid container spacing={3}>
    {data.data.map((categorie)=>(

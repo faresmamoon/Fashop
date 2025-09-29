@@ -2,8 +2,12 @@ import { Box, Card, CardContent, CardMedia, CircularProgress, Grid, Typography }
 import { useQuery } from "@tanstack/react-query";
 
 import AxiosInstanse from "../../api/AxiosInstanse";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export default function Brands() {
+       const { t} = useTranslation();
+    
     const fetchBrands= async()=>{
           const response=await AxiosInstanse.get(`/Brands`);
 return response;
@@ -18,7 +22,7 @@ if(isLoading) return <CircularProgress/>
   return (
    <Box py={5}  >
 <Typography variant="h3" component="h2">
-our brands
+{t("Brands")}
 </Typography>
 <Grid container spacing={3}>
    {data.data.map((brand)=>(
