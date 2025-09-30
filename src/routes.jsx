@@ -11,7 +11,7 @@ import ProtectedRouter from "./components/protected/ProtectedRouter";
 import Checkout from "./pages/checkout/Checkout";
 import Profile from "./pages/profile/Profile";
 import Orders from "./pages/profile/Orders";
-import Info from "./pages/profile/info";
+import Info from "./pages/profile/Info1";
 
 
 const router = createBrowserRouter([
