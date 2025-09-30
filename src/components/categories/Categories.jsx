@@ -7,7 +7,7 @@ export default function Categories() {
      const { t} = useTranslation();
   
      const fetchCategories= async()=>{
-          const response=await AxiosInstanse.get(`/Categories`);
+          const response=await AxiosInstanse.get(`/Customer/Categories`);
 return response;
     }
     const{data,isLoading,isError,error}=useQuery({

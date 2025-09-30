@@ -8,6 +8,10 @@ import ForgotPassword from "./pages/forgotpassword/ForgotPassword";
 import ResetPassword from "./pages/resetpassword/ResetPassword";
 import ProductsDetails from "./components/products/ProductsDetails";
 import ProtectedRouter from "./components/protected/ProtectedRouter";
+import Checkout from "./pages/checkout/Checkout";
+import Profile from "./pages/profile/Profile";
+import Info from "./pages/profile/info";
+import Orders from "./pages/profile/Orders";
 
 
 const router = createBrowserRouter([
@@ -43,7 +47,32 @@ index:true,
              {
  path:"/resetpassword",
         element:<ResetPassword/>,
+            },{
+                
+            path:'/checkout',
+        element:
+        <ProtectedRouter>
+            <Checkout/>
+        </ProtectedRouter>,
             },
+            {
+                
+            path:'/profile',
+        element:
+        <ProtectedRouter>
+            <Profile/>
+        </ProtectedRouter>,
+        children:[
+            {
+                index:true,
+                element:<Info/>
+            },{
+                path:'orders',
+                element:<Orders/>
+            },
+        ]
+            },
+
            { 
             path:'/product/:id',
         element:<ProtectedRouter>

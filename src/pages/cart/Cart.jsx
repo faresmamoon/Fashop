@@ -2,97 +2,55 @@ import { Button, CircularProgress, Table, TableBody, TableCell, TableContainer, 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';import AxiosUserInstanse from '../../api/AxiosUserInstanse';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AxiosUserInstanse from '../../api/AxiosUserInstanse';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 export default function Cart() {
-      const [carts,setCarts] = useState([]);
-        const [isLoading,setIsLoading]=useState(true);
- const getProducts=async()=>{
-  try{
-    const token=localStorage.getItem("userToken");
-    const response= await AxiosUserInstanse.get(`/Carts`,);
-    
-console.log(response);
-setCarts(response.data);
-  }catch(error){
-    console.log(error);
+    const queryClient=useQueryClient();
 
-  }finally{
-setIsLoading(false);
-  } }
-  
-const removeItem= async(productId)=>{
-  try{
-        const token=localStorage.getItem("userToken");
-const response = await AxiosUserInstanse.delete(`/Carts/${productId}`,
-)
-getProducts();
-  }catch(error){
-
-  }finally{
-
-  }
-}
- const  clearCart=async()=>{
-  try{
-        const token=localStorage.getItem("userToken");
-const response = await AxiosUserInstanse.delete(`/Carts/clear`,
-);
-if(response.status == 200){
-  getProducts();
-}
-
-  }catch(error){
-console.log(error);
-  }finally{
-
-  }
- }
- const incrementItem= async(productId)=>{
-  try{
-    const token=localStorage.getItem('userToken');
-    const response=await AxiosUserInstanse.post(`/Carts/increment/${productId}`,{},
-     
-    ); 
+      const fetchProducts=async()=>{
+    const response = await AxiosUserInstanse.get('/Customer/Carts');
+    return response;
+   }
+   const {data,isLoading,isError,error}=useQuery({
+    queryKey:['cartItems'],
+    queryFn:fetchProducts,
+    staleTime:1000*60*5
+   });
+   const incrementItem=async (productId)=>{
+    const response= await AxiosUserInstanse.post(`/Customer/Carts/increment/${productId}`,{});
     if(response.status == 200){
-        getProducts();
-      }
-  }catch(error){
-    console.log(error)
-  }finally{
+        queryClient.invalidateQueries(['cartItems']);
 
-  }
-
- }
- const decrementItem= async(item)=>{
-  try{
-   if(item.count == 1){
-      removeItem(item.productId);
-       getProducts();
-       return;
     }
-    const token=localStorage.getItem('userToken');
-    const response=await AxiosUserInstanse.post(`/Carts/decrement/${item.productId}`,{},
-    ); 
-   
+
+   }
+   const removeItem=async (productId)=>{
+    const response= await AxiosUserInstanse.delete(`/Customer/Carts/${productId}`);
     if(response.status == 200){
-        getProducts();
-      } 
-      
-  }catch(error){
-    console.log(error)
-  }finally{
+        queryClient.invalidateQueries(['cartItems']);
 
-  }
+    }
 
- }
-    useEffect(()=>{
-  getProducts();
-         },[]);
-    if(isLoading){
-            return(
-                <CircularProgress/>
-            )
-          }
+   }
+    const clearCart=async ()=>{
+    const response= await AxiosUserInstanse.delete(`/Customer/Carts/clear`);
+    if(response.status == 200){
+        queryClient.invalidateQueries(['cartItems']);
+
+    }}
+   const decrementItem=async (item)=>{
+  if(item.count == 1){
+      removeItem(item.productId);
+       return;
+    }    const response= await AxiosUserInstanse.post(`/Customer/Carts/decrement/${item.productId}`,{});
+    if(response.status == 200){
+        queryClient.invalidateQueries(['cartItems']);
+
+   }}
+   if(isError)return<p>error is{error}</p>
+if(isLoading) return <CircularProgress/>
         return (
     <TableContainer>
       <Table>
@@ -106,19 +64,19 @@ console.log(error);
           </TableRow>
         </TableHead>
         <TableBody>
-          {carts.items.map((item)=>
+          {data.data.items.map((item)=>
           <TableRow key={item.productId}> 
             <TableCell>  {item.productName} </TableCell>
             <TableCell>  {item.price}$  </TableCell>
             <TableCell >
-              <Box sx={{display:'flex',alignItems:'center',gap:'8px'}}>
+             <Box sx={{display:'flex',alignItems:'center',gap:'8px'}}>
 <RemoveIcon sx={{fontSize:15}}  onClick={()=>decrementItem(item)}></RemoveIcon>  
             {item.count}
              <AddIcon sx={{fontSize:15}}  onClick={()=>incrementItem(item.productId)}></AddIcon>
               </Box>
                </TableCell>
             <TableCell>  {item.totalPrice}  </TableCell>
-            <TableCell>  <Button color='error' onClick={()=>removeItem(item.productId)}>Remove</Button> </TableCell>
+             <TableCell>  <Button color='error' onClick={()=>removeItem(item.productId)}>Remove</Button> </TableCell>
           
           </TableRow>
           )}
@@ -127,14 +85,19 @@ console.log(error);
               <Typography> Card Total </Typography>
             </TableCell>
              <TableCell>
-              {carts.cartTotal}
+              {data.data.cartTotal}
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell colSpan={5} align='right' >
-              <Button variant='contained' color='error' onClick={clearCart}>
+              <Box sx={{display:'flex',justifyContent:'flex-end',gap:'1px'}}>
+                 <Button variant='contained' color='error' onClick={clearCart}>
                 Cler Cart
               </Button>
+               <Button component={Link} to='/checkout' variant='contained' color='primary' >
+               Checkout
+              </Button>
+              </Box>
             </TableCell>
           </TableRow>
         </TableBody>

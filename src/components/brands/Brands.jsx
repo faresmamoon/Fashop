@@ -9,7 +9,7 @@ export default function Brands() {
        const { t} = useTranslation();
     
     const fetchBrands= async()=>{
-          const response=await AxiosInstanse.get(`/Brands`);
+          const response=await AxiosInstanse.get(`/Customer/Brands`);
 return response;
     }
     const{data,isLoading,isError,error}=useQuery({

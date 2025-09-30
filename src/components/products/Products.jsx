@@ -9,7 +9,7 @@ export default function Products() {
      const { t} = useTranslation();
   
    const fetchProducts= async()=>{
-          const response=await AxiosInstanse.get(`/Products`);
+          const response=await AxiosInstanse.get(`/Customer/Products`);
 return response;
     }
     const{data,isLoading,isError,error}=useQuery({

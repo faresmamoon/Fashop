@@ -4,13 +4,14 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import AxiosUserInstanse from '../../api/AxiosUserInstanse';
 import { toast, Zoom } from 'react-toastify';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import AxiosInstanse from '../../api/AxiosInstanse';
 
 export default function ProductsDetails() { 
+  const queryClient=useQueryClient();
     const{id}= useParams();
   const fetchProductDetails= async()=>{
-          const response=await AxiosInstanse.get(`/Products/${id}`);
+          const response=await AxiosInstanse.get(`/Customer/Products/${id}`);
 return response;
     }
     const{data,isLoading,isError,error}=useQuery({
@@ -25,7 +26,7 @@ if(isLoading) return <CircularProgress/>
 
         const addToCart= async (id)=>{
 try{
-const response= await AxiosUserInstanse.post(`/Carts`,
+const response= await AxiosUserInstanse.post(`/Customer/Carts`,
   {productId:id},
 );if( response.status== 200 ){
    toast.success('product added succesfully', {
@@ -40,6 +41,7 @@ theme: "light",
 transition: Zoom,
 });
   }
+  queryClient.invalidateQueries(['cartItems']);
   console.log(response);
 }catch(error){
 
