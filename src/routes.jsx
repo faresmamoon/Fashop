@@ -10,8 +10,8 @@ import ProductsDetails from "./components/products/ProductsDetails";
 import ProtectedRouter from "./components/protected/ProtectedRouter";
 import Checkout from "./pages/checkout/Checkout";
 import Profile from "./pages/profile/Profile";
-import Info from "./pages/profile/info";
 import Orders from "./pages/profile/Orders";
+import Info from "./pages/profile/info";
 
 
 const router = createBrowserRouter([
