@@ -10,6 +10,7 @@ export default function Products() {
   
    const fetchProducts= async()=>{
           const response=await AxiosInstanse.get(`/Customer/Products`);
+         
 return response;
     }
     const{data,isLoading,isError,error}=useQuery({
@@ -25,7 +26,7 @@ if(isLoading) return <CircularProgress/>
 {t("Products")}
 </Typography>
 <Grid container spacing={3}>
-   {data.data.map((product)=>(
+   {data.data.data.map((product)=>(
     <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}  >
         <Link to={`/product/${product.id}`}   style={{ textDecoration: "none" }} >
         <Card  sx={{boxShadow:5,borderRadius:3,maxWidth:300}}>

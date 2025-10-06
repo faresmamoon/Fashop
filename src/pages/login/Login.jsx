@@ -1,15 +1,19 @@
 
-import { Box, Button, CircularProgress, Container, TextField, Typography } from '@mui/material'
+import { Box, Button, CardMedia, CircularProgress, Container, Divider, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material'
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import  RegisterImg from './../../assets/register.png'
+import  LoginImg from './../../assets/login.png'
 import  * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import loginSchema from '../../validations/LoginSchema';
 import { Link } from '@mui/material';
 import { Link as RouterLink, useNavigate, useOutletContext } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GoogleIcon from '@mui/icons-material/Google';
+import AppleIcon from '@mui/icons-material/Apple';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function Login() {
 
@@ -20,7 +24,8 @@ const {setIsLoggedIn}=useOutletContext();
 const navigate=useNavigate();
 
   const [isLoading,setIsLoading]=useState(false);
-  
+      const [showPassword, setShowPassword] = useState(false);
+       const handleTogglePassword = () => setShowPassword((prev) => !prev);
   const onSubmit=async(data)=>{
 try{
   setIsLoading(true);
@@ -50,37 +55,64 @@ console.log("cath error",error);
 }
   return (
   <>
-<Box sx= {{display:'flex' ,gap:4 }}>
-  <Box className="register-img" sx= {{ display: { xs: "none", sm: "none", md: "none", lg: "block" },height: '50px'  }}><img src={RegisterImg}  alt="" /></Box>
-    <Box className="login-form" sx={{display:'flex'  ,width:'40%' }} py={8} >
-<Container maxWidth="lg" bgcolor="red"  >
-  <Typography component="h1" variant='h6'>Create New Account</Typography>
-    <Typography component="p" variant='p'sx= {{color:'gray' }}> Join us to track orders, save favorites, and get special offers.</Typography>
+<Box sx= {{display:'flex',gap:15, }}>
+  <Box className="login-img" sx= {{ display: { xs: "none", sm: "none", md: "none", lg: "block" }  }}>
+       <CardMedia  sx={{height:'100vh' ,width:'100%'  }} component='img' image={LoginImg}>
+                </CardMedia>
+    </Box>
+    <Box className="login-form" sx={{display:'flex',justifyContent:'center',alignItems:'center',flexGrow:1,maxWidth: { lg: '600px',  }
+       }}  >
+<Container maxWidth="md"    >
+  <Typography component="h1" variant='h6'>Login</Typography>
+    <Typography component="p" variant='p'sx= {{color:'gray' }}> Good to see you again!</Typography>
 
- 
+<Stack direction={{ md: 'column', lg: 'row' }}  spacing={{  lg: 2, xs: 4 }} py={3}>
+      <Button variant="outlined" startIcon={<FacebookIcon />}>
+        Facebook
+      </Button>
+      <Button variant="outlined" startIcon={<GoogleIcon />}>
+Google      </Button>
+      <Button variant="outlined" startIcon={<AppleIcon />}>
+        Apple Id
+      </Button>
+    </Stack>
+   <Divider textAlign='center'>or</Divider>
+
 <Box 
 onSubmit={handleSubmit(onSubmit)}
 component={"form"} sx={{display:"flex",
   flexDirection:"column",
-  gap:4,
-  mt:5}}>
+  gap:2,
+  mt:3}}>
 
- 
-  <TextField {...register("email")} label="Email" variant='outlined'  fullWidth
+ <label >Email</label>
+  <TextField {...register("email")} placeholder="email@example.com"  fullWidth
    error={errors.email}
    helperText={errors.email?.message} 
   ></TextField>
-
-  <TextField {...register("password")} label="Password" variant='outlined'  fullWidth 
+<label >Password</label>
+  <TextField {...register("password")} type={showPassword ? "text" : "password"} placeholder="Password" variant='outlined'  fullWidth 
     error={errors.password}
-   helperText={errors.password?.message} 
+   helperText={errors.password?.message}
+     InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton onClick={handleTogglePassword} edge="end">
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
+        ),
+      }} 
   ></TextField>
-            <Link component={RouterLink} to={'/forgotpassword'}> Forgot Password
+            <Link display={'flex'} justifyContent={"flex-end"} component={RouterLink} to={'/forgotpassword'}> Forgot Password
 </Link>
   
   <Button type='submit' variant="contained" size='large' disabled={isLoading}>
     {isLoading?       <CircularProgress />:"login"}
     </Button>
+    <Typography display={'flex'} justifyContent={"center"} component={"h3"}>Don’t Have an Account?      <Link  component={RouterLink} to={'/register'}> Create Account
+</Link></Typography>
+ 
 
 </Box>
 </Container>

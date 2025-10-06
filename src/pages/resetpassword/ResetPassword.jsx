@@ -1,6 +1,6 @@
 
 
-import { Box, Button, CircularProgress, Container, TextField, Typography } from '@mui/material'
+import { Box, Button, CardMedia, CircularProgress, Container, TextField, Typography } from '@mui/material'
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -34,12 +34,17 @@ console.log("cath error",error);
 }
   return (
   <>
-<Box sx= {{display:'flex' ,gap:4 }}>
-  <Box className="register-img" sx= {{ display: { xs: "none", sm: "none", md: "none", lg: "block" },height: '50px'  }}><img src={RegisterImg}  alt="" /></Box>
-    <Box className="ResetPassword-form" sx={{display:'flex'  ,width:'40%' }} py={8} >
-<Container maxWidth="lg" bgcolor="red"  >
-  <Typography component="h1" variant='h6'>Create New Account</Typography>
-    <Typography component="p" variant='p'sx= {{color:'gray' }}> Join us to track orders, save favorites, and get special offers.</Typography>
+<Box sx= {{display:'flex' ,gap:15 }}>
+  <Box className="register-img" sx= {{ display: { xs: "none", sm: "none", md: "none", lg: "block" },  }}>
+    <CardMedia  sx={{height:'100vh' ,width:'100%'  }} component='img' image={RegisterImg}>
+                    </CardMedia>
+  </Box>
+    <Box className="ResetPassword-form" sx={{display:'flex',justifyContent:'center',alignItems:'center'  ,flexGrow:1,maxWidth: { lg: '600px',  } }}  >
+<Container maxWidth="md"  >
+  <Typography component="h1" variant='h6'>Step 2</Typography>
+    <Typography component="h1" variant='h6'>Set a New Password</Typography>
+
+    <Typography component="p" variant='p'sx= {{color:'gray' }}>  Create a strong password to secure your account.</Typography>
 
  
 <Box 
@@ -66,7 +71,7 @@ component={"form"} sx={{display:"flex",
    
   
   <Button type='submit' variant="contained" size='large' disabled={isLoading}>
-    {isLoading?       <CircularProgress />:"login"}
+    {isLoading?       <CircularProgress />:"Reset Password"}
     </Button>
 
 </Box>

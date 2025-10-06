@@ -8,6 +8,7 @@ export default function Info() {
 
       const fetchProfile=async()=>{
     const response = await AxiosUserInstanse.get('/Users/Profile');
+  
     return response;
    }
    const {data:user,isLoading,isError,error}=useQuery({
@@ -15,6 +16,7 @@ export default function Info() {
     queryFn:fetchProfile,
     staleTime:1000*60*5
    });
+     
    if(isLoading)return<CircularProgress/>
   return (
   <Box>

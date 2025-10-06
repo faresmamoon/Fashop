@@ -60,6 +60,8 @@ const [lang,setLang]=useState(i18next.language);
 
           
           <Link component={RouterLink} to={'/'} color='inherit'underline='none'> {t("Home")}</Link>
+                    <Link component={RouterLink} to={'/Products'} color='inherit'underline='none'> {t("Products")}</Link>
+
           {isLoggedIn ? (<>
           <Link component={RouterLink} to={'/cart'} color='inherit' underline='none'>{t("Cart")}{cartItemCount}</Link>
           <Link  component="button"  onClick ={handleLogout} color='inherit' underline='none'>{t("Logout")}</Link>

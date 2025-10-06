@@ -12,6 +12,8 @@ import Checkout from "./pages/checkout/Checkout";
 import Profile from "./pages/profile/Profile";
 import Orders from "./pages/profile/Orders";
 import Info from "./pages/profile/Info1";
+import AuthLayout from "./layout/AuthLayout";
+import Products from "./components/products/Products";
 
 
 const router = createBrowserRouter([
@@ -23,30 +25,17 @@ const router = createBrowserRouter([
 index:true,
         element:<Home/>,
             },
-                   {
- path:"/register",
-        element:<Register/>,
+              {
+ path:"/Products",
+        element:<Products/>,
             },
-                 {
- path:"/login",
-        element:<Login/>,
-            },
+                   
             
                  {
  path:"/cart",
         element:<ProtectedRouter>
             <Cart/>
         </ProtectedRouter>,
-            },
-
-                         {
- path:"/forgotpassword",
-        element:<ForgotPassword/>,
-            },
-
-             {
- path:"/resetpassword",
-        element:<ResetPassword/>,
             },{
                 
             path:'/checkout',
@@ -82,6 +71,16 @@ index:true,
             },
         ]
     },
+     {
+    path: "/",
+    element: <AuthLayout />,
+    children: [
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+      { path: "forgotpassword", element: <ForgotPassword /> },
+      { path: "resetpassword", element: <ResetPassword /> },
+    ],
+  },
     
 
 ]);export default router;
