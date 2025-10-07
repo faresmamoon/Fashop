@@ -9,7 +9,6 @@ export default function Home() {
     <div>
  <Brands/>  
  <Categories/> 
- <Products/>
   </div>
   )
 }

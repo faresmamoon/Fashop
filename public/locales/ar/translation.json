@@ -6,5 +6,30 @@
           "Cart":"السلة",
           "Brands":"العلامات التجارية",
           "Categories":"التصنيفات",
-                    "Products":"المنتجات"
+                    "Products":"المنتجات",
+                    "Profile":"الملف الشخصي",
+                    "Info":" معلومات شخصية",
+                    "Orders":"الطلبات",
+                    "Follow Us":"تابعنا",
+                    "Our Product":"منتجاتنا",
+                    "All Products":"جميع المنتجات",
+                    "Laptops":"أجهزة الكمبيوتر ",
+                    "Headphones":"سماعات الرأس",
+                    "Smartwatch":"ساعة ذكية",
+                    "Links":"روابط ",
+                    "Terms & Conditions":" الشروط والأحكام",
+                    "Privacy Policy":" سياسة الخصوصية",
+                    "Refund & Return Policy":"سياسة الاسترداد والإرجاع ",
+                  "Sunday to Thursday":"من الأحد إلى الخميس ",
+                  "Site Pages":"  صفحات الموقع  ",
+                  "Homepage":"الصفحة الرئيسية ",
+                  "About FA Store":"حول متجر FA ",
+                  "Shop":"تسوق ",
+                  "Contact Us":"اتصل بنا "
+
+                  
+
+
+                   
+
         }
