@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardContent, CardMedia, Chip, CircularProgress, Rating, Typography, Grid, Divider, Avatar, Modal, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import AxiosUserInstanse from '../../api/AxiosUserInstanse';
 import { toast, Zoom } from 'react-toastify';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -15,7 +15,7 @@ export default function ProductsDetails() {
   const [reviewRating, setReviewRating] = useState(0);
   const [reviewComment, setReviewComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+const navigate = useNavigate();
   const fetchProductDetails = async () => {
     const response = await AxiosInstanse.get(`/Customer/Products/${id}`);
     return response;
@@ -39,9 +39,11 @@ export default function ProductsDetails() {
 
   const addToCart = async (id) => {
     try {
+
       const response = await AxiosUserInstanse.post(`/Customer/Carts`,
         { productId: id },
       );
+      
       if (response.status === 200) {
         toast.success('Product added successfully', {
           position: "top-right",
@@ -55,10 +57,15 @@ export default function ProductsDetails() {
           transition: Zoom,
         });
       }
+     
       queryClient.invalidateQueries(['cartItems']);
       console.log(response);
     } catch (error) {
+     
       console.error('Error adding to cart:', error);
+      if(error.response.status ==401){
+         navigate("/login");
+      };
     }
   }
 
@@ -111,6 +118,9 @@ export default function ProductsDetails() {
         queryClient.invalidateQueries(['Products', id]);
       }
     } catch (error) {
+       if(error.response.status ==401){
+         navigate("/login");
+      }; 
       console.error('Error adding review:', error);
       toast.error('Failed to add review. Please try again.', {
         position: "top-right",
@@ -230,7 +240,10 @@ export default function ProductsDetails() {
             color='primary' 
             size="large"
             sx={{ mt: 2, py: 1.5 }}
-            onClick={() => addToCart(product.id)}
+            onClick={() =>
+             
+              addToCart(product.id) 
+              }
           >
             Add To Cart
           </Button>

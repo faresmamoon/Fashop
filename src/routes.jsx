@@ -64,10 +64,9 @@ index:true,
 
            { 
             path:'/product/:id',
-        element:<ProtectedRouter>
+        element:
             <ProductsDetails/>
-        </ProtectedRouter>
-        ,
+        
             },
         ]
     },
